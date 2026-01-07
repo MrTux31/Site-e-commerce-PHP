@@ -1,0 +1,1674 @@
+= Cahier de Recette - LeRoi Merlin (V2.0)
+:toc:
+:toc-title: Sommaire
+
+:Projet: LeRoi Merlin
+:Équipe:
+
+* ALLEMANE Axel
+* ROMA Quentin
+* LE DONNE Antonin
+* RIBEIRO VAUR Nino
+* OLIVENCIA Eliot
+
+Créé pour : SAE 3.01 - Développement d'un site de E-Commerce
+
+== I. Introduction
+[.text-justify]
+Ce cahier de recette décrit l’ensemble des cas de test réalisés pour valider toutes les fonctionnalités de l’application web *LeRoi Merlin* dans sa version 2.0. Il couvre la gestion des comptes, le catalogue, la recherche, la consultation des produits et la gestion du panier.
+
+== II. Pré-requis
+[.text-justify]
+
+* Navigateur web compatible (Chrome, Firefox, Edge, Safari)
+* Connexion Internet active
+* Serveur d'application et Base de données accessibles
+* Jeu de données initial (Produits, Catégories, Avis clients)
+
+== III. Cas de test
+
+=== 1. Inscription et Connexion
+
+==== Cas de Test : Création de compte
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| INS.1
+| Remplir formulaire avec données valides
+| Compte créé, mot de passe haché en BD, redirection vers page connexion avec message succès
+| Email unique
+| OK
+
+| INS.2
+| Valider formulaire avec des champs obligatoires manquants
+| Affichage message "Tous les champs obligatoires doivent être remplis."
+| Aucune
+| OK
+
+| INS.3
+| Saisir mot de passe faible
+| Message erreur "Le mot de passe doit contenir au moins 8 caractères, incluant une lettre minuscule, une majuscule, un chiffre et un caractère spécial."
+| Aucune
+| OK
+
+| INS.4
+| Saisir email déjà existant (d'un client ou administrateur)
+| Message "Un compte existe déjà avec cette adresse e-mail."
+| Compte existant
+| OK
+
+| INS.5
+| Saisir un email invalide (ex: utilisateur@, utilisateur@mail, utilisateur@mail.)
+| Affichage message "L'adresse e-mail n'est pas valide."
+| Format attendu : nom@domaine.extension (ex: utilisateur@mail.com)
+| OK
+
+| INS.6
+| Saisir deux mots de passe différents
+| Affichage message "Les mots de passe ne correspondent pas."
+| Aucune
+| OK
+
+| INS.7
+| Saisir un numéro de téléphone invalide (moins de 10 chiffres ou caractères non numériques)
+| Affichage message "Le numéro de téléphone doit contenir exactement 10 chiffres."
+| Champ téléphone renseigné
+| OK
+|===
+
+==== Cas de Test : Connexion 
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| AUTH.1
+| Saisir identifiants client valides
+| Connexion réussie, session ouverte, rôle = client, redirection vers page d’accueil
+| Compte client existant
+| OK
+
+| AUTH.2
+| Saisir identifiants administrateur valides
+| Connexion réussie, session ouverte, rôle = admin, redirection vers page d’accueil
+| Compte administrateur existant
+| OK
+
+| AUTH.3
+| Saisir email valide et mot de passe incorrect
+| Message "Identifiants incorrects ou compte inexistant", aucune session créée
+| Compte existant
+| OK
+
+| AUTH.4
+| Saisir email inexistant
+| Message "Identifiants incorrects ou compte inexistant", aucune session créée
+| Aucun
+| OK
+
+| AUTH.5
+| Valider formulaire sans email ou sans mot de passe
+| Message "Formulaire incomplet", aucune session créée
+| Aucun
+| OK
+
+| AUTH.6
+| Utiliser un email existant chez un admin avec le bon mot de passe
+| Authentification réussie en tant qu’administrateur
+| Compte admin existant
+| OK
+
+|===
+
+==== Cas de Test : Fonction "Se souvenir de moi"
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| AUTH.8
+| Cocher "Se souvenir de moi" lors de la connexion
+| Cookie sécurisé créé pour une reconnexion automatique, token enregistré en base
+| Connexion valide
+| OK
+
+| AUTH.9
+| Ne pas cocher "Se souvenir de moi"
+| Aucun cookie pour la reconnexion créé
+| Connexion valide
+| OK
+
+| AUTH.10
+| Se reconnecter après fermeture du navigateur avec cookie valide
+| Session recréée automatiquement
+| Cookie valide non expiré
+| OK
+
+| AUTH.11
+| Utiliser un cookie expiré
+| Connexion refusée, suppression du cookie
+| Cookie expiré
+| OK
+
+
+|===
+
+==== Cas de Test : Déconnexion
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| AUTH.13
+| Cliquer sur "Déconnexion"
+| Session détruite, cookie supprimé, redirection vers accueil
+| Utilisateur connecté
+| OK
+
+| AUTH.14
+| Accéder à une page protégée après déconnexion
+| Redirection vers page de connexion
+| Session inexistante
+| OK
+
+|===
+
+=== 2. Gestion du compte utilisateur
+
+==== Cas de Test : Accès et affichage du tableau de bord
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| TAB.1
+| Accéder à "Mon Compte" en étant connecté
+| Affichage du tableau de bord avec nom, points fidélité, nombre de commandes et dernière commande
+| Utilisateur connecté
+| OK
+
+| TAB.2
+| Accéder à "Mon Compte" sans être connecté
+| Redirection vers la page de connexion avec message d’erreur
+| Utilisateur non connecté
+| OK
+
+| TAB.3
+| Consulter le tableau de bord sans commande existante
+| Affichage du message "Aucune commande"
+| Compte sans commande
+| OK
+
+| TAB.4
+| Consulter le tableau de bord avec commandes existantes
+| Affichage de la dernière commande (numéro, statut, date)
+| Commandes existantes
+| OK
+|===
+
+==== Cas de Test : Mes Informations Personnelles
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| INFO.1
+| Accéder à "Mes Informations Personnelles"
+| Affichage du formulaire avec données actuelles de l'utilisateur
+| Utilisateur connecté
+| OK
+
+| INFO.2
+| Modifier informations personnelles avec données valides
+| Modifications enregistrées dans BD et message "Informations mises à jour avec succès !" affiché
+| Utilisateur connecté
+| OK
+
+| INFO.3
+| Soumettre formulaire avec champs obligatoires vides
+| Message d’erreur "Tous les champs obligatoires doivent être remplis."
+| Utilisateur connecté
+| OK
+
+| INFO.4
+| Soumettre formulaire sans modification
+| Message "Aucune modification détectée."
+| Utilisateur connecté
+| OK
+
+|===
+
+==== Cas de Test : Consulter ses commandes
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| CONSULT.1
+| Consulter historique commandes
+| Liste des commandes avec leurs statuts et totaux affichée dans un tableau, boutons "Voir détails" disponibles
+| Utilisateur connecté, commandes existantes
+| OK
+
+| CONSULT.2
+| Consulter historique commandes sans commande
+| Message "Votre inventaire de quêtes est vide (aucune commande)" affiché, lien vers boutique
+| Utilisateur connecté, aucune commande
+| OK
+
+| CONSULT.3
+| Erreur lors de la récupération des commandes
+| Message d’erreur affiché à l’écran (ex : "Erreur de récupération des parchemins")
+| Utilisateur connecté, problème base de données
+| OK
+|===
+
+==== Cas de Test : Voir détails d'une commande
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| DETAIL.1
+| Voir détails d'une commande
+| Affichage complet du récapitulatif : produits, quantités, prix, sous-total, frais de port, points fidélité, total payé, adresse de livraison, moyen de paiement. Bouton “Annuler” visible uniquement si commande `payee` ou `expediee`.
+| Utilisateur connecté, commande existante
+| OK
+
+| DETAIL.2
+| Accès sans ID de commande
+| Redirection vers l’historique des commandes
+| Utilisateur connecté, pas d’ID dans l’URL
+| OK
+
+| DETAIL.3
+| Accès commande inexistante
+| Redirection vers l’historique des commandes
+| Utilisateur connecté, ID invalide ou commande non trouvée
+| OK
+
+| DETAIL.4
+| Annulation d’une commande
+| Statut modifié en `Annulee` et redirection vers l’historique
+| Commande existante, statut `payee` ou `expediee`
+| OK
+
+|===
+
+
+=== 3. Navigation et Catalogue
+
+==== Cas de Test : Affichage de la page d'accueil (index.php)
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| INDEX.1
+| Affichage de la bannière héroïque
+| La section bannière avec logo, titre, sous-titre et bouton "Explorer la Boutique" est visible et correctement stylée
+| Fichier `index.php` accessible | OK
+
+| INDEX.2
+| Affichage des artefacts vedettes
+| Les produits vedettes sont affichés dans une grille avec vignette, nom, prix, prix soldé si applicable et couleur de rareté
+| Base de données accessible, au moins un produit vedette retourné par `getTopProduitsAccueil()` | OK
+
+| INDEX.3
+| Absence de produit vedette
+| La section "Artefacts Vedettes" n’apparaît pas si aucune vedette n’est retournée
+| Base de données accessible, aucune vedette | OK
+
+|===
+
+==== Cas de Test : Navigation depuis l'index
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| NAV.1
+| Accéder au Catalogue général
+| Affichage de tous les produits sous forme de grille
+| Site accessible
+| OK
+
+| NAV.2
+| Voir les détails d'un produit de l'accueil
+| Page du produit qui s'affiche
+| Produits existant
+| OK
+
+| NAV.3
+| Ajouter un produit de l'accueil au panier
+| Produit de l'accueil ajouté au panier
+| Produits existant
+| OK
+
+| NAV.4
+| Accès à la page de connexion
+| Page de connexion accessible
+| Utilisateur non connecté, "Se connecter" sélectionné
+| OK
+
+| NAV.5
+| Accès à la page "Mon compte"
+| Page mon compte qui s'affiche
+| Client connecté, bouton "Mon Compte" sélectionné
+| OK
+
+|===
+
+=== 4. Recherche et Filtres
+
+==== Cas de Test : Recherche par mot-clé
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| SRCH.1
+| Saisir un mot-clé simple (ex: "Mana")
+| Liste des produits contenant le mot (dans libellé, description, catégorie, regroupement) affichée
+| Produits correspondants
+| OK
+
+| SRCH.2
+| Recherche sans résultat
+| Message "Aucun produit trouvé" ou liste vide affiché
+| Mot-clé inexistant
+| OK
+
+| SRCH.3
+| Saisir plusieurs mots-clés (ex: "potion mana")
+| Liste des produits correspondant à tous les mots-clés affichée
+| Produits correspondants aux mots-clés
+| OK
+
+| SRCH.4
+| Recherche insensible à la casse
+| Même résultat qu’une recherche avec casse correcte (ex: "MANA" → "Mana")
+| Produits correspondants
+| OK
+
+| SRCH.5
+| Recherche combinée avec filtres (qualité, regroupement, catégorie, sous-catégorie)
+| Les filtres appliqués sont pris en compte et seuls les produits correspondant à la recherche et aux filtres sont affichés
+| Produits correspondants et filtres sélectionnés
+| OK
+
+| SRCH.6
+| Recherche vide (aucun mot-clé saisi)
+| Tous les  produuiits du catalogue sont affichés
+| Aucun mot-clé saisi
+| OK
+|===
+
+==== Cas de Test : Filtres avancés et Tri
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| FILT.1
+| Filtrer par Qualité (Rare, Épique...)
+| Seuls les produits de la qualité choisie s'affichent
+| Catalogue ouvert
+| OK
+
+| FILT.2
+| Filtrer par Regroupement
+| Seuls les produits appartenant au regroupement s'affichent
+| Catalogue ouvert
+| OK
+
+| FILT.3
+| Filtrer par Catégorie / Sous-catégorie
+| Produits correspondant à la sélection affichés
+| Catalogue ouvert
+| OK
+
+| FILT.4
+| Combiner Recherche, Filtre et Tri
+| Résultat respecte tous les critères appliqués
+| Catalogue ouvert
+| OK
+
+| FILT.5
+| Sélectionner "Toutes les catégories"
+| L’ensemble des produits est affiché
+| Catalogue ouvert
+| OK
+
+| FILT.6
+| Sélectionner une catégorie puis "Toutes les sous-catégories"
+| Tous les produits de la catégorie sélectionnée sont affichés
+| Catégorie sélectionnée
+| OK
+
+| FILT.7
+| Sélectionner "Aucun tri Regroupement"
+| Tous les produits sont affichés
+| Catalogue ouvert
+| OK
+
+| FILT.8
+| Sélectionner une catégorie ne contenant aucun produit
+| Message "Aucun produit ne correspond à votre recherche" affiché
+| Catalogue ouvert
+| OK
+
+| FILT.9
+| Combiner mot-clé + filtres (qualité, regroupement, catégorie)
+| Si aucun produit ne correspond, afficher "Aucun produit ne correspond à votre recherche"
+| Catalogue ouvert avec mot-clé et filtres appliqués | OK
+
+| TRI.1
+| Trier par Prix croissant/décroissant
+| Ordre d'affichage modifié
+| Catalogue ouvert
+| OK
+
+| TRI.2
+| Sélectionner "Aucun tri de prix"
+| Les produits s’affichent sans ordre de prix spécifique
+| Catalogue ouvert
+| OK
+
+|===
+
+
+=== 5. Fiche Produit
+
+==== Cas de Test : Consultation Produit
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.1
+| Cliquer "Voir détails"
+| Affichage page produit (Images, Prix, Description, Fiche Technique, Stock, Provenance, Avis)
+| Produit existant
+| OK
+
+| PROD.2
+| Consulter les variantes
+| Affichage des autres déclinaisons du produit
+| Variantes existantes
+| OK
+
+| PROD.3
+| Lire les avis clients
+| Affichage note moyenne, étoiles et commentaires
+| Avis existants
+| OK
+
+| PROD.12
+| Lire des réponses d'avis des administrateurs
+| Les réponses des administrateurs s'affichent sous l'avis correspondant
+| Au moins un avis avec réponse présente
+| OK
+
+| PROD.4
+| Vérifier produits similaires
+| Section "Produits Apparentés / Similaires" visible
+| Produits apparentés existants
+| OK
+|===
+
+==== Cas de Test : Gestion Produit Introuvable
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.5
+| Accéder à un produit avec un ID inexistant ou invalide
+| Redirection vers la page catalogue avec message d'erreur "Produit introuvable."
+| Produit inexistant ou ID non numérique
+| OK
+|===
+
+==== Cas de Test : Produit sans variantes
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.6
+| Consulter un produit n'ayant pas de variantes
+| La section "Autres versions" n'apparaît pas
+| Aucune variante disponible
+| OK
+|===
+
+==== Cas de Test : Produit sans avis
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.7
+| Consulter un produit sans avis
+| Affichage du texte "Aucun avis pour ce produit…" et pas de liste d'avis
+| Aucun avis existant pour ce produit
+| OK
+|===
+
+==== Cas de Test : Produit sans produits similaires
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.8
+| Consulter un produit sans produits similaires
+| La section "Artefacts Similaires" n'apparaît pas
+| Aucun produit similaire lié
+| OK
+|===
+
+==== Cas de Test : Stock épuisé
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PROD.9
+| Consulter un produit dont le stock est à 0
+| Affichage "Hors stock" en rouge et le formulaire d'ajout au panier est désactivé ou absent
+| Quantité en stock = 0
+| OK
+|===
+
+
+
+
+=== 6. Gestion du Panier
+
+
+==== Cas de Test : Ajout et Modification Panier
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| CART.1
+| Ajouter depuis le catalogue
+| Produit ajouté, cookie panier mis à jour, icône panier mise à jour
+| Stock disponible
+| OK
+
+| CART.2
+| Ajouter depuis fiche produit
+| Produit ajouté avec quantité sélectionnée, cookie mis à jour
+| Stock disponible
+| OK
+
+| CART.3
+| Consulter le panier
+| Affichage récapitulatif (Nom produit, Prix unitaire, Quantité, Total)
+| Panier non vide
+| OK
+
+| CART.4
+| Modifier quantité (+) ou (-)
+| Quantité mise à jour, sous-total recalculé, cookie actualisé
+| Article dans panier
+| OK
+
+| CART.5
+| Supprimer un article
+| Article retiré du cookie, total recalculé, affichage mis à jour
+| Article dans panier
+| OK
+
+| CART.12
+| Ajouter un produit avec quantité valide
+| Produit ajouté au panier, cookie mis à jour, message de succès si consultProduit
+| Stock suffisant
+| OK
+
+| CART.13
+| Ajouter un produit au delà de la quantité dispo max
+| Quantité limitée au stock max, message d'erreur informatif renvoyé
+| Stock limité
+| OK
+
+| CART.14
+| Ajouter un produit déjà présent dans le panier
+| Quantité cumulée, limitée au stock max, cookie mis à jour
+| Produit déjà dans le panier
+| OK
+
+|===
+
+==== Cas de Test : Achat depuis le Panier
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| CART.17
+| Cliquer sur "Passer à la caisse" avec panier valide
+| Redirection vers page paiement, tous les produits ajoutés à la session
+| Panier non vide
+| OK
+
+| CART.18
+| Cliquer sur "Passer à la caisse" avec produit devenu indisponible
+| Exception levée, redirection vers panier avec message "Produit X indisponible !"
+| Panier contenant produit hors stock
+| OK
+
+| CART.19
+| Cliquer sur "Passer à la caisse" avec panier corrompu (cookie invalide)
+| Panier réinitialisé, message d'erreur informatif (panier vide)
+| Cookie panier corrompu
+| OK
+|===
+
+==== Cas de Test : Nettoyage automatique du Panier
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| CART.20
+| Accéder au panier contenant un produit devenu hors stock
+| Le produit est automatiquement retiré du panier, cookie mis à jour
+| Panier contenant un produit dont la quantité en stock = 0
+| OK
+
+| CART.21
+| Accéder au panier avec un produit dont la quantité en panier > stock réel
+| La quantité du produit est ajustée à la quantité disponible, cookie mis à jour, affichage panier mis à jour
+| Panier contenant un produit avec qté panier > qté en stock
+| OK
+|===
+
+=== 7. Passer une commande
+
+==== Cas de Test : Paiement et Validation du Formulaire
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| PAY.01
+| Accéder à la page paiement sans être connecté
+| Redirection vers page connexion avec message d'erreur
+| Session client non définie
+| OK
+
+| PAY.02
+| Accéder à la page paiement avec panier vide ou non défini
+| Redirection vers page panier avec message "Aucun article à commander."
+| Panier vide ou non défini
+| OK
+
+| PAY.03
+| Soumettre le formulaire avec tous les champs valides (CB)
+| Transaction réussie, insertion en base, points fidélité mis à jour, redirection page accueil avec succès
+| Client connecté, panier non vide, infos CB valides
+| OK
+
+| PAY.04
+| Soumettre le formulaire avec email invalide
+| Redirection vers paiement avec message d'erreur "L'adresse e-mail n'est pas valide."
+| Formulaire rempli incorrectement
+| OK
+
+| PAY.05
+| Soumettre le formulaire avec champs obligatoires vides
+| Redirection vers paiement avec message d'erreur "Tous les champs obligatoires doivent être remplis."
+| Formulaire incomplet
+| OK
+
+| PAY.06
+| Soumettre le formulaire avec points fidélité supérieurs aux points disponibles
+| Redirection vers paiement avec message d'erreur "Vous n'avez pas assez de points de fidélité."
+| Client avec points insuffisants
+| OK
+
+| PAY.07
+| Utiliser des points de fidélité lors du paiement
+| Total réduit de 0,5€ par point utilisé, points débités correctement, points gagnés calculés sur le total après réduction
+| Client connecté avec points disponibles, panier non vide
+| OK
+
+| PAY.08
+| Soumettre le formulaire avec valeur de points fidélité non autorisée
+| Redirection vers paiement avec message d'erreur "Valeur de points de fidélité invalide."
+| Formulaire rempli incorrectement
+| OK
+
+| PAY.09
+| Soumettre une commande et vérifier points fidélité gagnés
+| Points fidélité gagnés = floor(prixTotalCommande * 0.1), ajoutés au total du client
+| Client connecté, panier non vide, achat validé
+| OK
+
+| PAY.10
+| Soumettre le formulaire CB avec numéro de carte invalide (<16 chiffres ou non numériques)
+| Redirection vers paiement avec message d'erreur "Le numéro de carte doit contenir exactement 16 chiffres."
+| Formulaire CB incorrect
+| OK
+
+| PAY.11
+| Soumettre le formulaire CB avec CVC invalide (<3 chiffres ou non numériques)
+| Redirection vers paiement avec message d'erreur "Le CVC doit contenir exactement 3 chiffres."
+| Formulaire CB incorrect
+| OK
+
+| PAY.12
+| Soumettre le formulaire CB avec date d'expiration mal formatée ou expirée
+| Redirection vers paiement avec message d'erreur approprié
+| Formulaire CB incorrect
+| OK
+
+| PAY.13
+| Soumettre le formulaire CB avec nom sur carte vide
+| Redirection vers paiement avec message d'erreur "Le nom sur la carte est obligatoire."
+| Formulaire CB incorrect
+| OK
+
+| PAY.14
+| Soumettre le formulaire avec méthode de paiement PayPal ou Virement
+| Transaction réussie, insertion en base, points fidélité mis à jour, panier vidé, redirection page accueil avec succès
+| Client connecté, panier non vide, méthode non CB
+| OK
+
+| PAY.15
+| Échec insertion en base (exception PDO)
+| Transaction rollback, redirection vers page accueil avec message d'erreur "Erreur inattendue lors du paiement"
+| Problème BD (ex : stock indisponible etc)
+| OK
+
+
+|===
+
+=== 8. Dépôt d'avis clients
+
+==== Cas de Test : Déposer un avis
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| AVIS.01
+| Déposer un avis autorisé avec note valide et commentaire
+| Avis ajouté en base, message de succès affiché, utilisateur autorisé
+| Utilisateur connecté, produit existant, note 0-5, produit livré
+| OK
+
+| AVIS.02
+| Déposer un avis autorisé sans commentaire
+| Avis ajouté, commentaire null en base, message de succès affiché, utilisateur autorisé
+| Utilisateur connecté, produit existant, note valide, commentaire vide, produit livré
+| OK
+
+| AVIS.03
+| Déposer un avis autorisé avec images valides (jpg/png, <=4)
+| Avis ajouté, images déplacées et insérées en base, message de succès affiché, utilisateur autorisé
+| Images valides, <=4 fichiers, produit livré
+| OK
+
+| AVIS.04
+| Déposer un avis sans note
+| Redirection vers consultProduit avec message d'erreur "Merci de compléter tous les champs obligatoires."
+| Note non fournie
+| OK
+
+| AVIS.05
+| Déposer un avis sans idProduit
+| Redirection vers index avec message d'erreur "ID du produit non spécifié."
+| idProduit manquant
+| OK
+
+| AVIS.06
+| Déposer un avis sans être connecté
+| Redirection vers consultProduit avec message d'erreur "Vous n'êtes pas autorisé à déposer un avis sur ce produit."
+| Utilisateur non connecté
+| OK
+
+| AVIS.07
+| Déposer un avis avec note invalide (<0 ou >5)
+| Redirection vers consultProduit avec message d'erreur "Note invalide. Doit être comprise entre 0 et 5."
+| Note invalide
+| OK
+
+| AVIS.08
+| Déposer un avis avec plus de 4 images
+| Redirection vers consultProduit avec message d'erreur "Maximum 4 images autorisées."
+| 5 images ou plus
+| OK
+
+| AVIS.09
+| Déposer un avis avec image au format non autorisé
+| Redirection vers consultProduit avec message d'erreur "L'image X n'est pas au format jpg/jpeg/png !"
+| Image format non autorisé (ex: gif)
+| OK
+
+| AVIS.10
+| Déposer un avis non autorisé : produit non acheté
+| Redirection vers consultProduit avec message d'erreur "Vous n'êtes pas autorisé à déposer un avis sur ce produit."
+| Produit non acheté par l'utilisateur
+| OK
+
+| AVIS.11
+| Déposer un avis non autorisé : produit non livré
+| Redirection vers consultProduit avec message d'erreur "Vous n'êtes pas autorisé à déposer un avis sur ce produit."
+| Produit acheté mais non livré
+| OK
+
+| AVIS.12
+| Déposer un avis non autorisé : avis déjà déposé
+| Redirection vers consultProduit avec message d'erreur "Vous n'êtes pas autorisé à déposer un avis sur ce produit."
+| Avis déjà déposé pour ce produit par l'utilisateur
+| OK
+|===
+
+=== 9. Gestion des produits (Administrateur)
+
+==== Cas de Test : Affichage et navigation
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.PRD.1
+|Accéder à la page admin produits
+|Session admin active
+|Ouvrir la page CRUD produit
+|Liste des produits parents affichée
+|OK
+
+|ADM.PRD.2
+|Produit sans catégorie
+|Produit sans catégorie assignée
+|Vérifier affichage du produit
+|Badge “Aucune catégorie” affiché
+|OK
+
+|ADM.PRD.3
+|Produit sans déclinaison
+|Produit sans déclinaison associée
+|Déplier le produit
+|Message “Aucune déclinaison existante” affiché
+|OK
+
+|ADM.PRD.4
+|Cliquer sur un produit
+|Déclinaisons existantes
+|Cliquer sur produit parent
+|Dépliage des déclinaisons correct
+|OK
+
+|ADM.PRD.5
+|Aucun produit en base
+|Base vide
+|Accéder à la page
+|Message “Aucun produit disponible” affiché
+|OK
+
+|ADM.PRD.6
+|Affichage du nombre de déclinaisons
+|Produit avec 0 ou plusieurs déclinaisons
+|Vérifier la colonne “Variantes”
+|Nombre affiché correspond au nombre réel de déclinaisons
+|OK
+
+
+| ADM.PRD.7
+| Quantité stock <= seuil
+| Déclinaison existante
+| Mettre stock <= seuil
+| Stock affiché en rouge (UI)
+|OK
+
+| ADM.PRD.8
+| Quantité stock > seuil
+| Déclinaison existante
+| Mettre stock > seuil
+| Stock affiché en vert (UI)
+|OK
+
+|ADM.PRD.9
+|Messages de succès/erreur après action
+|Formulaire parent ou variante soumis
+|Soumettre formulaire avec succès ou avec erreur
+|Message vert pour succès ou rouge pour erreur affiché
+|OK
+|===
+
+==== Cas de Test : Création d'un produit parent
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.PAR.1
+|Ouvrir le formulaire création produit
+|Session admin
+|Cliquer “Créer un produit”
+|Fenêtre de création qui s'ouvre, vide
+|OK
+
+|ADM.PAR.2
+|Créer produit avec catégorie
+|Champs valides
+|Remplir nom, description, choisir catégorie, valider
+|Produit ajouté et associé à la catégorie
+|OK
+
+|ADM.PAR.3
+|Créer produit sans catégorie
+|Champs valides, catégorie vide
+|Remplir nom et description, laisser catégorie vide, valider
+|Produit ajouté, catégorie “Aucune” assignée
+|OK
+
+|ADM.PAR.4
+|Champs obligatoires manquants
+|Formulaire vide
+|Soumettre sans nom ou description
+|Erreur “Champ manquant ou vide” affichée
+|OK
+
+|ADM.PAR.5
+|Annuler la création d'un produit
+|Formulaire création produit ouvert
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de création fermée, aucun produit ajouté
+|OK
+|===
+
+==== Cas de Test : Modification d'un produit parent
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.MOD.PAR.1
+|Ouvrir le formulaire de modification
+|Produit existant
+|Cliquer “Modifier”
+|Fenêtre de modification du produit préremplie avec toutes les données
+|OK
+
+|ADM.MOD.PAR.2
+|Modifier nom
+|Produit existant
+|Changer nom et valider
+|Nouveau nom enregistré en base
+|OK
+
+|ADM.MOD.PAR.3
+|Changer catégorie
+|Produit existant
+|Sélectionner nouvelle catégorie, valider
+|Catégorie mise à jour en base
+|OK
+
+|ADM.MOD.PAR.4
+|Supprimer catégorie
+|Produit avec catégorie
+|Sélectionner “Aucune catégorie”, valider
+|Produit associé à aucune catégorie
+|OK
+
+|ADM.MOD.PAR.5
+|Annuler la modification d'un produit
+|Formulaire de modification d'un produit ouvert
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de modification fermée, le produit n'a pas été modifié.
+|OK
+
+|===
+
+==== Cas de Test : Création d'une déclinaison
+
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+
+|ADM.DCL.C.1
+|Ouvrir le formulaire de création de la déclinaison
+|Session admin
+|Après avoir déroulé le menu d'un produit, cliquer sur “Ajouter une déclinaison”
+|Fenêtre de création qui s'ouvre, vide
+|OK
+
+|ADM.DCL.C.2
+|Création d'une déclinaison
+|Produit parent existant
+|Remplir tous les champs obligatoires, choisir éventuellement images, valider
+|Nouvelle déclinaison ajoutée en base, images enregistrées sur serveur et en BD
+|OK
+
+|ADM.DCL.C.3
+|Création déclinaison sans images
+|Produit parent existant
+|Remplir champs obligatoires, ne pas ajouter d'image, valider
+|Déclinaison ajoutée sans image, aucune erreur
+|OK
+
+|ADM.DCL.C.4
+|Création déclinaison avec prix soldé invalide
+|Produit parent existant
+|Remplir prixSolde >= prix, valider
+|Erreur “Le prix soldé doit être inférieur au prix de base !” affichée
+|OK
+
+|ADM.DCL.C.5
+|Champ obligatoire manquant
+|Produit parent existant
+|Soumettre formulaire avec un champ obligatoire vide
+|Erreur “Champ manquant ou vide : ...” affichée
+|OK
+
+|ADM.DCL.C.6
+|Prix négatif ou quantité négative
+|Produit parent existant
+|Soumettre prix ou qteStock négatifs
+|Valeurs transformées en 0 et enregistrées correctement
+|OK
+
+|ADM.DCL.C.7
+|Upload image invalide
+|Produit parent existant
+|Uploader fichier non jpg/png, valider
+|Erreur “L'image ... n'est pas au format jpg/jpeg/png ! "
+Annulation des changements effectués dans la BD, annulation de l'upload des images étant passées.
+|OK
+
+
+
+|ADM.DCL.C.8
+|Annuler la création d'une déclinaison
+|Formulaire de modification de la déclinaison ouverte
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de création fermée, aucune déclinaison ajoutée
+|OK
+|===
+
+
+
+==== Cas de Test : Modification d'une déclinaison
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.DCL.M.1
+|Ouvrir le formulaire de modification de la déclinaison
+|Session admin
+|Après avoir déroulé le menu d'un produit, cliquer sur “Modifier” d'une déclinaison
+|Fenêtre de modification qui s'ouvre, pré remplie
+|OK
+
+|ADM.DCL.M.2
+|Modification d'une déclinaison
+|Déclinaison existante
+|Modifier libellé, description, fiche technique, prix, catégorie, ajouter des images et valider
+|Déclinaison mise à jour correctement en base
+|OK
+
+|ADM.DCL.M.3
+|Ajout d'images à une déclinaison existante
+|Déclinaison existante, aucune image
+|Uploader images valides jpg/png, valider
+|Images déplacées sur serveur et ajoutées en BD
+|OK
+
+|ADM.DCL.M.4
+|Suppression d'images existantes
+|Déclinaison existante avec images
+|Désélectionner certaines images, valider
+|Images supprimées du serveur et de la BD
+|OK
+
+|ADM.DCL.M.5
+|Déclinaison inexistante
+|ID de déclinaison invalide
+|Modifier déclinaison avec id invalide
+|Erreur “Déclinaison introuvable !”
+|OK
+
+|ADM.DCL.M.6
+|Annuler la modification d'une déclinaison
+|Formulaire de modification de la déclinaison ouverte
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de création fermée, aucune déclinaison modifiée
+|OK
+
+|===
+
+
+
+==== Cas de Test : Création d'un kit d'objet
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.KIT.1
+|Ouvrir le formulaire création de kit
+|Session admin
+|Cliquer “Assembler un kit”
+|Fenêtre de création qui s'ouvre, vide
+|OK
+
+|ADM.KIT.2
+|Champs obligatoires manquants
+|Formulaire vide
+|Soumettre sans nom, provenance, prix, stock, seuil, composant
+|Erreur “Champ manquant ou vide” affichée
+|OK
+
+|ADM.KIT.3
+|Annuler la création d'un kit
+|Formulaire création kit ouvert
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de création fermée, aucun kit ajouté
+|OK
+|===
+
+==== Cas de Test : Modification d'un kit
+
+[cols="1,2,2,2,2,2", options="header"]
+|===
+|ID |Action |Pré-conditions |Étapes |Résultat attendu |Résultat
+
+|ADM.MOD.KIT.1
+|Ouvrir le formulaire de modification
+|Kit existant
+|Cliquer “Modifier”
+|Fenêtre de modification du kit préremplie avec toutes les données
+|OK
+
+|ADM.MOD.KIT.2
+|Modifier nom
+|Produit existant
+|Changer nom et valider
+|Nouveau nom enregistré en base
+|OK
+
+|ADM.MOD.KIT.3
+|Annuler la modification d'un kit
+|Formulaire de modification d'un kit ouvert
+|Cliquer sur le bouton “Annuler”
+|Fenêtre de modification fermée, le kit n'a pas été modifié.
+|OK
+
+|===
+
+
+
+
+=== 10. Registre des Commandes (Administrateur)
+
+
+
+==== Cas de Test : Consultation et Filtrage
+
+[cols="1,2,3,2,1", options="header"]
+
+|===
+
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+
+
+| ADM.CMD.1
+
+| Recherche dynamique de commande
+
+| Filtrage instantané du tableau lors de la saisie d'un numéro de commande ou d'un nom de client.
+
+| Liste de commandes affichée
+
+| OK
+
+
+
+| ADM.CMD.2
+
+| Distinction visuelle des commandes terminées
+
+| Les commandes `livree` ou `annulee` s'affichent avec une opacité réduite (60%) et le bouton "Gérer" est désactivé/absent.
+
+| Commandes terminées présentes en base
+
+| OK
+
+|===
+
+
+
+==== Cas de Test : Modification du cycle de vie d'une commande
+
+[cols="1,2,3,2,1", options="header"]
+
+|===
+
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+
+
+| ADM.CMD.3
+
+| Ouvrir le modal de gestion
+
+| Affichage d'une fenêtre surgissante pré-remplie avec les informations du client et le statut actuel.
+
+| Cliquer sur "Gérer"
+
+| OK
+
+
+
+| ADM.CMD.4
+
+| Changer le statut pour "Expédiée"
+
+| Apparition automatique du champ "Date d'Expédition" pré-rempli avec l'horodatage actuel.
+
+| Sélectionner "expediee" dans la liste déroulante
+
+| OK
+
+
+
+| ADM.CMD.5
+
+| Finaliser une commande ("Livrée")
+
+| Apparition des champs "Date d'Expédition" et "Date de Réception".
+
+| Sélectionner "livree" dans la liste déroulante
+
+| OK
+
+
+
+| ADM.CMD.6
+
+| Enregistrer les modifications
+
+| Mise à jour en base de données, fermeture du modal et affichage d'un message de succès vert.
+
+| Formulaire valide
+
+| OK
+
+
+
+| ADM.CMD.7
+
+| Annulation d'une mise à jour
+
+| Fermeture du modal sans aucune modification des données en base.
+
+| Cliquer sur "Annuler" ou sur la croix
+
+| OK
+
+|===
+
+=== 11. Gestion des Regroupements / Collections (Administrateur)
+
+==== Cas de Test : Affichage et navigation
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.REG.1
+| Accéder à la page de gestion des regroupements
+| Liste des regroupements affichée avec ID, nom, nombre de produits associés et boutons d'action
+| Session admin active
+| OK
+
+| ADM.REG.2
+| Consulter un regroupement sans produits associés
+| Affichage "0 produit(s) lié(s)" dans la colonne correspondante
+| Regroupement existant sans produits
+| OK
+
+| ADM.REG.3
+| Consulter un regroupement avec produits associés
+| Nombre correct de produits affiché (ex: "5 produit(s) lié(s)")
+| Regroupement existant avec produits
+| OK
+
+| ADM.REG.4
+| Affichage des badges de couleur
+| Chaque regroupement possède un badge coloré distinctif
+| Regroupements existants
+| OK
+|===
+
+==== Cas de Test : Création d'un regroupement
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.REG.C.1
+| Ouvrir le formulaire de création
+| Modal de création s'ouvre avec formulaire vide et liste de tous les produits disponibles
+| Session admin active, cliquer sur "Créer une Collection"
+| OK
+
+| ADM.REG.C.2
+| Créer un regroupement avec nom valide sans produits
+| Regroupement créé en base, message "Un nouveau regroupement de tri a été créé !", regroupement affiché dans la liste
+| Formulaire de création ouvert, nom saisi
+| OK
+
+| ADM.REG.C.3
+| Créer un regroupement avec nom et produits sélectionnés
+| Regroupement créé en base avec associations produits, message de succès affiché
+| Formulaire de création ouvert, nom saisi, produits cochés
+| OK
+
+| ADM.REG.C.4
+| Soumettre formulaire sans nom
+| Message d'erreur "Champ manquant ou vide : libelle" affiché
+| Formulaire de création ouvert
+| OK
+
+| ADM.REG.C.5
+| Rechercher un produit dans la liste
+| Filtrage dynamique de la liste des produits selon la saisie
+| Formulaire ouvert, saisie dans le champ de recherche
+| OK
+
+| ADM.REG.C.6
+| Annuler la création d'un regroupement
+| Modal fermé, aucun regroupement ajouté en base
+| Formulaire de création ouvert, cliquer sur "Annuler"
+| OK
+|===
+
+==== Cas de Test : Modification d'un regroupement
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.REG.M.1
+| Ouvrir le formulaire de modification
+| Modal s'ouvre pré-rempli avec le nom du regroupement et les produits déjà associés cochés
+| Regroupement existant, cliquer sur "Gérer les produits"
+| OK
+
+| ADM.REG.M.2
+| Modifier le nom du regroupement
+| Nom mis à jour en base, message "La collection a été mise à jour !" affiché
+| Formulaire de modification ouvert, nouveau nom saisi
+| OK
+
+| ADM.REG.M.3
+| Ajouter des produits à un regroupement existant
+| Nouveaux produits associés au regroupement en base, nombre de produits mis à jour dans la liste
+| Formulaire de modification ouvert, cocher de nouveaux produits
+| OK
+
+| ADM.REG.M.4
+| Retirer des produits d'un regroupement
+| Associations supprimées en base, nombre de produits mis à jour dans la liste
+| Formulaire de modification ouvert, décocher des produits
+| OK
+
+| ADM.REG.M.5
+| Modifier nom et produits simultanément
+| Toutes les modifications enregistrées en base via une seule transaction
+| Formulaire de modification ouvert, modifications effectuées
+| OK
+
+| ADM.REG.M.6
+| Initialiser un regroupement
+| Confirmation demandée, tous les produits décochés et nom réinitialisé dans le formulaire
+| Formulaire de modification ouvert, cliquer sur "Initialiser le regroupement"
+| OK
+
+| ADM.REG.M.7
+| Annuler la modification d'un regroupement
+| Modal fermé, aucune modification enregistrée en base
+| Formulaire de modification ouvert, cliquer sur "Annuler"
+| OK
+
+| ADM.REG.M.8
+| Modifier un regroupement inexistant
+| Message d'erreur "Regroupement introuvable !" affiché
+| ID de regroupement invalide
+| OK
+|===
+
+==== Cas de Test : Suppression d'un regroupement
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.REG.S.1
+| Supprimer un regroupement
+| Confirmation demandée, regroupement et associations supprimés en base, ligne retirée du tableau
+| Regroupement existant, cliquer sur "Supprimer"
+| OK
+
+| ADM.REG.S.2
+| Annuler la suppression d'un regroupement
+| Aucune suppression effectuée, regroupement toujours présent
+| Confirmation de suppression, cliquer sur "Annuler"
+| OK
+
+| ADM.REG.S.3
+| Supprimer un regroupement avec produits associés
+| Regroupement et toutes ses associations avec les produits supprimés en base
+| Regroupement avec produits associés existant
+| OK
+|===
+
+=== 12. Modération des Avis (Administrateur)
+
+==== Cas de Test : Consultation et Réponse aux avis
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.AVIS.1
+| Accéder à la page de modération des avis
+| Liste des avis affichée avec ID, nom du client, note, commentaire et produit concerné
+| Session admin active
+| OK
+
+| ADM.AVIS.2
+| Consulter un avis avec images
+| Les miniatures des images déposées par le client sont visibles dans la liste
+| Avis avec images existant
+| OK
+
+| ADM.AVIS.R.1
+| Ouvrir le formulaire de réponse
+| Une fenêtre s'ouvre avec un champ de texte vide pour rédiger la réponse
+| Cliquer sur "Répondre"
+| OK
+
+| ADM.AVIS.R.2
+| Envoyer une réponse valide
+| Message enregistré en base, mention "VOTRE RÉPONSE OFFICIELLE" ajoutée sous l'avis
+| Texte saisi dans le champ
+| OK
+
+| ADM.AVIS.R.3
+| Soumettre une réponse vide
+| Blocage de l'envoi et affichage du message "Veuillez compléter le formulaire"
+| Champ texte laissé vide
+| OK
+
+| ADM.AVIS.R.4
+| Tenter de répondre deux fois au même avis
+| Le bouton "Répondre" disparaît pour éviter les doublons de réponses
+| Avis possédant déjà une réponse
+| OK
+
+| ADM.AVIS.R.5
+| Saisie de caractères spéciaux ou scripts
+| Le texte est traité comme du texte brut et ne s'exécute pas sur la page
+| Saisie de balises HTML ou scripts
+| OK
+
+| ADM.AVIS.R.6
+| Annuler la rédaction d'une réponse
+| Fenêtre fermée, aucune modification enregistrée en base
+| Cliquer sur "Annuler"
+| OK
+|===
+
+==== Cas de Test : Suppression d'un avis
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.AVIS.S.1
+| Supprimer un avis client
+| Demande de confirmation, avis supprimé en base et retiré de l'affichage
+| Avis existant, cliquer sur "Supprimer"
+| OK
+
+| ADM.AVIS.S.2
+| Annuler la suppression d'un avis
+| Aucune suppression effectuée, l'avis reste présent dans la liste
+| Demande de confirmation, cliquer sur "Annuler"
+| OK
+
+| ADM.AVIS.S.3
+| Supprimer un avis avec réponse officielle
+| L'avis et la réponse liée sont supprimés simultanément en base de données
+| Avis avec réponse présent
+| OK
+|===
+
+=== 13. Gestion des Catégories (Administrateur)
+
+==== Cas de Test : Affichage et Création
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.CAT.1
+| Accéder à la page de gestion des catégories
+| Tableau affiché avec ID, libellé, catégorie parente et boutons d'action
+| Session admin active
+| OK
+
+| ADM.CAT.2
+| Vérifier la hiérarchie visuelle
+| Les sous-catégories sont marquées par un décalage ou une flèche par rapport au parent
+| Arborescence existante
+| OK
+
+| ADM.CAT.C.1
+| Ouvrir le formulaire de création
+| Fenêtre de création affichée avec formulaire vide et liste des parents
+| Cliquer sur "+ NOUVELLE CATÉGORIE"
+| OK
+
+| ADM.CAT.C.2
+| Créer une catégorie avec nom valide
+| Catégorie créée en base, message "La catégorie a été créée !" affiché
+| Nom saisi, parent choisi
+| OK
+
+| ADM.CAT.C.3
+| Soumettre création sans nom
+| Blocage et affichage du message "Veuillez compléter le formulaire"
+| Champ libellé vide
+| OK
+
+| ADM.CAT.C.4
+| Créer un doublon de nom de catégorie
+| Message d'erreur "Ce nom de catégorie est déjà utilisé" affiché
+| Nom déjà existant en base
+| OK
+
+| ADM.CAT.C.5
+| Annuler la création d'une catégorie
+| Fenêtre fermée, aucune catégorie ajoutée en base de données
+| Cliquer sur "Annuler"
+| OK
+|===
+
+==== Cas de Test : Modification et Logique métier
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.CAT.M.1
+| Ouvrir le formulaire de modification
+| Fenêtre de modification affichée, pré-remplie avec les données actuelles
+| Cliquer sur "Modifier"
+| OK
+
+| ADM.CAT.M.2
+| Modifier le nom ou la catégorie parente
+| Mise à jour en base, message "La catégorie a été mise à jour !" affiché
+| Nouveau nom ou parent choisi
+| OK
+
+| ADM.CAT.M.3
+| Vider le libellé lors d'une modification
+| Blocage et affichage du message "Veuillez compléter le formulaire"
+| Nom effacé dans le champ de saisie
+| OK
+
+| ADM.CAT.M.4
+| Définir la catégorie comme son propre parent
+| La catégorie elle-même est absente de la liste des parents sélectionnables
+| Formulaire de modification ouvert
+| OK
+
+| ADM.CAT.M.5
+| Déplacer un parent dans sa propre sous-catégorie
+| Blocage de l'action pour éviter de casser la structure de l'arborescence
+| Hiérarchie multiniveaux existante
+| OK
+|===
+
+==== Cas de Test : Suppression d'une catégorie
+
+[cols="1,2,3,2,1", options="header"]
+|===
+| ID | Action | Comportement attendu | Pré-conditions | Résultat
+
+| ADM.CAT.S.1
+| Supprimer une catégorie vide
+| Demande de confirmation, catégorie supprimée et ligne retirée du tableau
+| Aucun produit ou enfant lié
+| OK
+
+| ADM.CAT.S.2
+| Annuler la suppression d'une catégorie
+| Fenêtre fermée, la catégorie reste présente dans le tableau
+| Demande de confirmation, cliquer sur "Annuler"
+| OK
+
+| ADM.CAT.S.3
+| Supprimer une catégorie liée à des produits
+| Message d'erreur "Impossible de supprimer une catégorie contenant des produits"
+| Produits associés présents
+| OK
+
+| ADM.CAT.S.4
+| Supprimer une catégorie parente avec enfants
+| Blocage de la suppression tant que des sous-catégories lui sont rattachées
+| Sous-catégories existantes
+| OK
+|===
+
+== IV. Conclusion
+[.text-justify]
+
+Ce cahier de recette a permis de valider de manière exhaustive l’ensemble des fonctionnalités de l’application web LeRoi Merlin dans sa version 2.0. Les différents cas de test couvrent aussi bien les parcours utilisateurs (clients et administrateurs) que les règles métiers critiques, garantissant ainsi le bon fonctionnement global du site e-commerce.
+
+Les tests réalisés confirment la robustesse des mécanismes essentiels tels que la gestion des comptes, la navigation dans le catalogue, la recherche et le filtrage des produits, la gestion du panier, le passage de commande, ainsi que le dépôt et la modération des avis clients. Une attention particulière a été portée aux cas limites (données invalides, accès non autorisés, erreurs de base de données), afin d’assurer la fiabilité et la sécurité de l’application.
+
+La partie administration a également été validée avec succès, notamment pour la gestion des produits, déclinaisons, kits, regroupements, catégories, commandes et avis. Les contrôles de cohérence, les transactions sécurisées et les messages de retour utilisateur contribuent à une expérience d’administration claire et maîtrisée.
+
+L’ensemble des tests aboutissant à des résultats conformes aux comportements attendus, l’application LeRoi Merlin peut être considérée comme fonctionnelle, stable et prête pour une mise en production ou une phase de démonstration dans le cadre de la SAE 3.01. Des évolutions futures pourraient toutefois être envisagées, notamment en matière de performances, d’accessibilité ou d’automatisation des tests, afin d’améliorer encore la qualité globale du projet.
+

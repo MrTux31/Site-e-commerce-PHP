@@ -1,0 +1,801 @@
+= SAE 3.01 - Développement d'un site de E-Commerce
+:doctype: book
+:toc: left
+:toclevels: 2
+:sectnums:
+:imagesdir: vertopal_f18bbfcfda5242d68ed78dda83b2b6e4/media
+:version: 2.0
+
+== Documentation Utilisateur V2.0
+
+image::image1.png[Logo,442,336]
+
+image::image2.png[Équipe,164,67]
+
+ALLEMANE Axel - ROMA Quentin - LE DONNE Antonin - RIBEIRO VAUR Nino - OLIVENCIA Eliot
+
+<<<
+
+= Introduction
+
+Le site *LeRoi Merlin* est une plateforme de commerce en ligne spécialisée dans la vente d'articles magiques et médiévaux artisanaux, destinés aux aventuriers, enchanteurs et passionnés d'univers fantastiques. Les produits proposés incluent notamment des armes, des potions, des grimoires et des artefacts mystiques, chacun disposant de caractéristiques propres, de déclinaisons et d'un système d'évaluation par les utilisateurs.
+
+Cette documentation utilisateur a pour objectif de décrire l'ensemble des fonctionnalités actuellement disponibles sur le site, aussi bien pour les *utilisateurs clients* que pour les *administrateurs* de la plateforme. Elle constitue un support destiné à faciliter la prise en main du site, la navigation, ainsi que la compréhension des différents processus métiers liés à la vente en ligne.
+
+La première partie de ce document est consacrée à la partie administrative du site. Elle décrit les fonctionnalités de gestion mises à disposition des administrateurs, notamment :
+
+* la gestion des produits et de leurs déclinaisons ;
+* la gestion des avis clients ;
+* la gestion des catégories ;
+* la gestion des regroupements ;
+* le suivi et la gestion des commandes.
+
+Cette section a également pour objectif de servir de support lors de la formation de futurs administrateurs du site.
+
+La seconde partie est dédiée à l'utilisation du site côté client. Elle présente les fonctionnalités permettant à un utilisateur de :
+
+* créer et gérer un compte utilisateur ;
+* rechercher et consulter des produits ;
+* gérer un panier ;
+* passer une commande ;
+* suivre ses commandes ;
+* déposer des avis ;
+* utiliser un système de points de fidélité.
+
+== Pré-requis
+
+Pour utiliser le site LeRoi Merlin dans de bonnes conditions, les utilisateurs doivent disposer :
+
+* D'un navigateur web compatible (Chrome, Firefox, Edge, Safari)
+* D'une connexion Internet active
+
+== Navigation et ergonomie
+
+Le site *LeRoi Merlin* est conçu pour offrir une navigation intuitive aux utilisateurs, afin qu'ils puissent trouver et consulter facilement les articles magiques et médiévaux proposés.
+
+Dans la section suivante, nous allons vous présenter les divers menus principaux composants le site.
+
+=== Menus principaux
+
+* *Accueil* : accès à la présentation générale du site et aux promotions ou nouveautés.
+
+image::image3.png[Accueil,359,211]
+
+* *Catalogue* : accès à toutes les catégories et sous-catégories de produits (ex : Armes, Consommables, Grimoires, Bijoux mystiques...).
+
+image::image4.png[Catalogue,403,265]
+
+* *Page consultation du produit* : permet de consulter en détail un produit, d'avoir son prix, sa description, sa note moyenne et voir les avis.
+
+image::image5.png[Consultation produit,520,306]
+
+* *Panier* : consultation et modification des articles sélectionnés pour l'achat.
+
+image::image6.png[Panier,492,307]
+
+* *Compte* : gestion du profil utilisateur, connexion/déconnexion, suivi des commandes et points de fidélité.
+
+image::image7.png[Compte,554,232]
+
+=== Navigation secondaire
+
+* *Filtres et tri* : possibilité de filtrer les produits par prix, catégorie, regroupement ou notes des clients.
+
+image::image8.png[Filtres,602,84]
+
+* *Recherche rapide* : moteur de recherche par mot-clé pour trouver un produit spécifique.
+
+image::image9.png[Recherche,602,80]
+
+* *Produits apparentés et recommandations* : suggestions de produits similaires ou les mieux notés.
+
+image::image10.png[Recommandations,602,235]
+
+== *Présentation de la partie "Administration"*
+
+La partie administrative du site *LeRoi Merlin* est réservée aux administrateurs et permet de gérer l'ensemble du catalogue, des commandes et des contenus de la plateforme.
+
+=== *Fiche de conseils risques et RGPD pour l’administration*
+
+Pour plus de détails sur la sécurité et la gestion des données personnelles, consultez la fiche complète : 
+link:conseilsRisquesRGPD.adoc[Fiche de conseils – Risques et RGPD]
+
+
+=== Connexion au compte administrateur
+
+image::image11.png[Se connecter,602,84]
+
+Pour accéder à l'interface d'administration, l'administrateur doit se connecter avec ses identifiants administrateur.
+
+image::image18.png[Formulaire connexion complet,308,270]
+
+Une fois devant le formulaire l'administrateur doit renseigner son e-mail lié à son compte ainsi que son mot de passe. Si l'administrateur veut rester connecté lorsqu'il quitte le site, il doit cocher le bouton "Se souvenir de moi". Une fois les champs remplis, il suffit de cliquer sur le bouton "Se Connecter".
+
+Si vous n'avez pas mis le mot de passe ou votre email correctement, il y aura une erreur d'identifiants incorrects.
+
+image::image19.png[Erreur identifiants,486,134]
+
+=== Accès à l'espace administrateur
+
+Une fois authentifié, un menu d'administration devient accessible.
+L'administrateur doit sélectionner le bouton "Dashboard".
+
+image::image79.png[Dashboard,602,84]
+
+L'espace administrateur devient donc visible :
+
+image::image78.png[Tableau de bord,800,450]
+
+Voici les différentes sections de gestion proposées par l'espace administrateur :
+
+* *Tableau de bord* : vue d'ensemble des indicateurs clés (trésorerie, commandes urgentes, avis en attente, stocks critiques) et des activités récentes
+* *Produits* : création, modification et gestion des produits et de leurs déclinaisons
+* *Catégories* : organisation de l'arborescence du catalogue
+* *Regroupements* : gestion des ensembles de produits
+* *Kits & Coffrets* : création et gestion de packs de produits comprenant plusieurs articles à prix groupé
+* *Commandes* : suivi et gestion des commandes clients
+* *Avis* : modération et gestion des avis déposés par les clients
+
+Les sections suivantes détaillent chacune de ces fonctionnalités.
+
+=== Présentation du tableau de bord
+
+Le *Tableau de bord* est la page d’accueil de l’espace administrateur.  
+Il offre une vue synthétique et en temps réel de l’activité de la boutique *Le Roi Merlin*.  
+Cette page permet à l’administrateur de surveiller rapidement les indicateurs clés, d’identifier les urgences et d’accéder aux actions prioritaires.
+
+image::image78.png[Tableau de bord,800,450]
+
+
+==== En-tête et navigation
+
+La barre de navigation latérale permet d’accéder aux principales fonctionnalités de gestion :
+
+* Tableau de bord
+* Produits
+* Catégories
+* Regroupements
+* Kits & Coffrets
+* Commandes
+* Avis
+* Déconnexion
+
+L’administrateur connecté est affiché en haut de l’interface (ex. *Antonin*).
+
+==== Indicateurs financiers
+
+Le tableau de bord affiche les données financières principales :
+
+* **Trésorerie du mois en cours**  
+  Montant total des ventes réalisées sur le mois (ex. *Janvier*), avec :
+  ** une variation en pourcentage par rapport au mois précédent
+  ** un indicateur visuel (hausse ou baisse)
+
+* **Total de l’année**  
+  Cumul des ventes depuis le début de l’année sélectionnée.
+
+Ces indicateurs permettent de suivre rapidement la performance commerciale globale.
+
+==== Indicateurs d’urgence
+
+Une section *Urgence* met en avant les éléments nécessitant une action rapide :
+
+* **Commandes en cours**  
+  Nombre de commandes non encore traitées ou finalisées.
+
+* **Avis clients – Réponses en attente**  
+  Nombre d’avis clients nécessitant une réponse de l’administrateur.
+
+* **Stocks sous le seuil**  
+  Nombre d’articles dont le stock est inférieur ou égal au seuil défini.
+
+Ces compteurs facilitent la priorisation des actions quotidiennes.
+
+==== Graphique des ventes
+
+La section *Ventes du RoiMerlin* affiche un **graphique des ventes annuelles** :
+
+* Les ventes sont représentées sous forme de graphique (ex. courbe ou histogramme).
+* L’administrateur peut **sélectionner l’année** à afficher (ex. 2026).
+* Le graphique permet d’analyser l’évolution des ventes sur l’ensemble de l’année.
+
+Cet outil est destiné au suivi des performances et à l’aide à la décision.
+
+==== Dernières activités
+
+La zone *Dernières activités* présente un historique récent des événements importants :
+
+* Nouvelles commandes (avec numéro, client et date relative)
+* Réception de nouveaux avis clients
+* Autres actions significatives liées à la boutique
+
+Cette liste permet à l’administrateur de suivre l’actualité de la plateforme sans naviguer dans chaque module.
+
+==== Accès rapide à la gestion des commandes
+
+Un bouton *Gérer les commandes* est accessible depuis le tableau de bord.  
+Il permet de rejoindre directement la page de gestion des commandes afin de traiter rapidement les commandes en attente.
+
+
+
+
+
+
+=== Gérer les produits
+
+image::image61.png[image,width=654,height=232]
+
+Afin de gérer les produits, l'administrateur doit se rendre sur l'onglet "Produits".
+
+==== Consulter tous les produits
+
+image::image62.png[image,width=602,height=167]
+
+Depuis la page de consultation des produits, il peut visualiser tous les produits "parents" existants. Il peut voir dans quelle catégorie est le produit ainsi que le nombre de déclinaisons existantes pour celui-ci.
+
+image::image63.png[image,width=602,height=80]
+
+En cliquant sur le nom du produit, un menu déroulant apparaît pour montrer les diverses déclinaisons existantes du produit.
+
+image::image64.png[image,width=602,height=80]
+
+Les informations sur les déclinaisons sont visibles telles que : le prix standard, le prix en solde / non soldé, la quantité en stock restant et la qualité du produit : "Légendaire", "Épique", "Rare" etc…
+
+==== Créer un produit parent
+
+image::process1.png[process1,800,400]
+
+Représentation du processus BPMN.
+
+
+
+image::image65.png[image,width=636,height=226]
+
+Afin de créer un nouveau produit parent, l'administrateur sélectionne le bouton "Créer un Produit" en haut à droite.
+
+image::image66.png[image,width=362,height=238]
+
+Une fenêtre de création de produit s'ouvre et l'administrateur entre les diverses informations afin de créer le produit. Il sélectionne ensuite le bouton "Enregistrer".
+
+image::image67.png[image,width=777,height=33]
+
+Après avoir cliqué sur enregistrer, l'administrateur consulte à nouveau le tableau des produits (voir [underline]#"Consulter tous les produits"#). Le nouveau produit ajouté est alors visible.
+
+==== Modifier un produit parent
+
+image::image68.png[image,width=777,height=34]
+
+Depuis le tableau de consultation des produits (voir [underline]#"Consulter tous les produits"#), l'administrateur sélectionne "Modifier" sur le produit de son choix.
+
+image::image69.png[image,width=390,height=261]
+
+Une fenêtre permettant de modifier les informations du produit apparaît. Celle-ci est pré-remplie avec les informations du produit. L'administrateur change ce qu'il souhaite et clique sur enregistrer. Les modifications du produit peuvent être visible après enregistrement.
+
+==== Créer une déclinaison de produit
+
+image::image70.png[image,width=718,height=116]
+
+Pour ajouter une déclinaison d'un produit, l'administrateur sélectionne d'abord le produit de son choix (1) puis il clique sur "Ajouter une déclinaison" (2).
+
+image::image71.png[image,width=371,height=529]
+
+Une fenêtre de création pour la déclinaison apparaît alors.
+
+L'administrateur saisit toutes les informations afin de créer la déclinaison, il peut même ajouter des images. Il clique ensuite sur "Enregistrer Variante".
+
+image::image72.png[image,width=772,height=110]
+
+Une fois la déclinaison enregistrée, elle apparaît dans le menu déroulant du produit parent, ici "Cape magique".
+
+image::image73.png[image,width=193,height=259]
+
+La déclinaison du produit est maintenant visible depuis le catalogue et peut être consultée et achetée par un client.
+
+image::image74.png[image,width=420,height=277]
+
+La déclinaison du produit peut aussi être visible depuis la page de consultation des produits de la boutique.
+
+==== Modifier une déclinaison d'un produit
+
+image::image75.png[image,width=764,height=92]
+
+Depuis le tableau de consultation des produits (voir [underline]#"Consulter tous les produits"#), l'administrateur sélectionne le produit parent de son choix (1) puis clique sur le bouton modifier de la déclinaison voulue (2).
+
+image::image76.png[image,width=282,height=466]
+
+Une fenêtre d'édition apparaît, celle-ci est pré-remplie. L'administrateur peut changer toutes les informations, par exemple il peut mettre la déclinaison en solde ou bien ajouter des photos / en supprimer. Il clique ensuite sur "Enregistrer Variante".
+
+image::image77.png[image,width=790,height=47]
+
+Les modifications apportées à la déclinaison sont alors visibles depuis la page de consultation après avoir cliqué sur enregistrer.
+
+
+
+
+=== Gérer les Kits
+
+image::1.png[image,width=654,height=232]
+
+Afin de gérer les kits, l'administrateur doit se rendre sur l'onglet "Kits & Coffrets".
+
+==== Consulter tous les kits
+
+image::2.png[image,width=602,height=167]
+
+Depuis la page de consultation des kits, il peut visualiser tous les kits existants.
+Les informations sur les kits sont visibles telles que : le prix standard, la quantité en stock
+
+==== Créer un kit
+
+image::1.png[image,width=636,height=226]
+
+Afin de créer un nouveau kit, l'administrateur sélectionne le bouton "Assembler un kit" en haut à droite.
+
+image::3.png[image,width=400,height=350]
+
+Une fenêtre de création de kit s'ouvre et l'administrateur entre les diverses informations afin de créer le kit. Il sélectionne ensuite le bouton "Enregistrer".
+
+image::4.png[image,width=777,height=100]
+
+Après avoir cliqué sur Valider la forge, l'administrateur consulte à nouveau le tableau des kits (voir [underline]#"Consulter tous les kits"#). Le nouveau kit ajouté est alors visible.
+
+==== Modifier un kit
+
+image::5.png[image,width=160,height=200]
+
+Depuis le tableau de consultation des kits (voir [underline]#"Consulter tous les kits"#), l'administrateur sélectionne "Modifier" sur le kit de son choix.
+
+image::6.png[image,width=500,height=450]
+
+Une fenêtre permettant de modifier les informations du kit apparaît. Celle-ci est pré-remplie avec les informations du kit. L'administrateur change ce qu'il souhaite et clique sur enregistrer. Les modifications du kit peuvent être visible après enregistrement.
+
+
+=== Gérer les commandes
+
+image::process2.png[process2,800,400]
+
+Représentation du processus BPMN.
+
+
+
+image::registreCommandeVueEnsemble.png[image,width=800,height=330]
+
+Depuis l’onglet “Commandes”, l’administrateur accède au registre complet des commandes passées sur la boutique.
+
+image::registreCommandeAtraiter.png[image,width=800,height=330]
+
+En haut de l'interface, un indicateur permet de visualiser instantanément le nombre de commandes à traiter en priorité.
+
+Pour modifier le suivi d'une commande, l'administrateur clique sur le bouton “Gérer” situé à l'extrémité de la ligne correspondante.
+
+image::StatusCommande.png[image,width=450,height=480]
+
+Lorsqu'un statut d'expédition ou de livraison est sélectionné, des champs spécifiques permettent de renseigner précisément la date d'expédition et la date de réception.
+
+Une fois les informations mises à jour, l’administrateur clique sur le bouton “Enregistrer” pour valider les modifications.
+
+=== Gérer les avis
+
+Pour gérer les retours clients, l’administrateur se rend sur l’onglet **“Avis”**. (il se peut aussi que l'avis soit laissé avec une image)
+
+image::image_1.png[Interface avis, 800]
+
+==== Consulter et répondre aux avis
+
+Depuis la page de Modération des Avis, l'administrateur peut lire les commentaires, voir la note (étoiles) et le produit concerné.
+
+L’administrateur clique sur le bouton **“RÉPONDRE”** pour ouvrir une fenêtre de saisie.
+
+image::image_2.png[Bouton répondre, 800]
+
+image::image_4.png[Fenêtre répondre, 800]
+
+L’administrateur saisit son message dans la fenêtre et clique sur **“ENVOYER LA RÉPONSE”** afin de la lui faire parvenir directement.
+
+image::image_3.png[Réponse officielle, 800]
+
+La réponse devient alors visible sous l'avis original avec la mention **“VOTRE RÉPONSE OFFICIELLE”** qui indique que votre message est bien parvenu à son destinataire.
+
+==== Supprimer un avis
+
+L'usage de cet outil doit rester exceptionnel conformément à la Charte de modération affichée.
+
+L'administrateur clique sur **“SUPPRIMER”** en haut à droite du bloc de l'avis, ce qui déclenche l'ouverture d'une fenêtre de confirmation demandant **“Voulez-vous vraiment supprimer cet avis ?”**.
+
+image::image_5.png[Bouton supprimer, 800]
+
+image::image_6.png[Confirmation suppression avis, 800]
+
+Après avoir cliqué sur **“OK”**, l'avis est retiré et un bandeau de succès confirme que **“L'avis a été supprimé avec succès”** en haut de la page.
+
+image::image_7.png[Bandeau succès suppression, 800]
+
+<<<
+
+=== Gérer les catégories
+
+Afin de gérer l’arborescence de la boutique, l’administrateur doit se rendre sur l’onglet **“Catégories”**.
+
+==== Consulter les catégories
+
+Depuis la page **“Archives des Catégories”**, l’administrateur peut visualiser l’ensemble des catégories sous forme de liste.
+
+image::image_8.png[Liste des catégories, 850]
+
+Le tableau affiche la liste des catégories avec un système de flèches pour indiquer la hiérarchie et une colonne précisant la catégorie parente ou si l'élément est à la racine.
+
+==== Créer une catégorie
+
+Afin de créer une nouvelle catégorie, l’administrateur sélectionne le bouton **“+ NOUVELLE CATÉGORIE”** en haut à droite.
+
+image::image_10.png[Bouton nouvelle catégorie, 850]
+
+L’administrateur saisit le nom de la catégorie, sélectionne le parent dans la liste déroulante ou laisse **"-- Racine --"** qui désigne une catégorie parente, puis clique sur le bouton **"ENREGISTRER"**.
+
+image::image_9.png[Fenêtre de création, 800]
+
+==== Modifier ou supprimer une catégorie
+
+Depuis le tableau de consultation, l’administrateur sélectionne **“Modifier”** sur la ligne correspondante.
+
+image::image_11.png[Action modifier, 800]
+
+Dans la fenêtre de modification, l’administrateur peut changer le nom ou le parent avant de cliquer sur **“ENREGISTRER”**, ou supprimer la catégorie en cliquant sur le texte rouge **“SUPPRIMER”** puis sur **“OK”** dans l’alerte de confirmation.
+
+image::image_12.png[Formulaire édition, 800]
+
+image::image_13.png[Alerte confirmation 1, 800]
+
+image::image_14.png[Alerte confirmation 2, 800] 
+
+=== Gérer les regroupements
+
+Les regroupements sont des groupes de produits qui partagent une même caractéristique(exemple : "Soldes", "Nouveautés", "Édition Limitée", etc.). Afin de gérer ces derniers, l'administrateur doit se rendre dans l'onglet "Regroupements".
+
+image::OngletRegroupement.png[Onglet Regroupements,align="center"]
+
+==== Créer un regroupement
+
+Afin de créer un regroupement, l'administrateur doit cliquer sur le bouton "Créer une collection" :
+
+image::BoutonCreerCollection.png[Créer une collection,align="center"]
+
+Il insère ensuite le nom du regroupement qu'il veut créer , sélectionne les produits associés à ce regroupement dans le menu déroulant puis clique sur le bouton "Enregistrer". Le regroupement est alors créé.
+
+image::FormulaireCreationRegroupement.png[Créer une collection,align="center", 400]
+image::CollectionTestCreer.png[Collection test créée,align="center"]
+
+==== Modifier un regroupement
+
+Afin de modifier un regroupement, l'administrateur doit cliquer sur le bouton "Gérer les produits" situé à droite du regroupement qu'il veut modifier.
+
+image::BoutonGererProduit.png[Modifier un regroupement,align="center"]
+
+Il peut ensuite modifier les produits associés à ce regroupement en les sélectionnant/désélectionnant dans le menu déroulant ainsi que son nom puis valider les modifications en cliquant sur le bouton "Enregistrer". Le regroupement est alors modifié.
+
+image::FormulaireModifRegroupement.png[Formulaire de modification d'un regroupement,align="center", 400]
+image::CollectionTestModifier.png[Collection test modifiée,align="center"]
+
+Enfin il peut initialiser le regroupement en cliquant sur le bouton "Initialiser le regroupement". Le nom et les produits associés au regroupement sont alors initialisés.
+
+image::CollectionTestInitialiser.png[Collection test initialisée,align="center"]
+
+==== Supprimer un regroupement
+
+Afin de supprimer un regroupement, l'administrateur doit cliquer sur le bouton "Supprimer" situé à droite du regroupement qu'il veut supprimer.
+
+image::BoutonSupprimer.png[Supprimer un regroupement,align="center"]
+
+Il confirme ensuite la suppression dans la fenêtre pop-up qui s'ouvre en cliquant sur le bouton "OK". Le regroupement est alors supprimé.
+
+image::ConfirmationSuppression.png[Fenêtre popup de confirmation de suppression d'un regroupement,align="center"]
+image::OngletRegroupement.png[Collection test supprimée,align="center"]
+
+
+
+
+
+
+
+
+== *Présentation de la partie "Client"*
+
+=== Création de compte
+
+Lorsque vous arrivez sur le site, cliquez sur se connecter dans la section en haut à droite.
+
+image::image11.png[Se connecter,602,84]
+
+Un formulaire de connexion apparaît, choisissez *Créer un Compte*
+
+image::image12.png[Formulaire connexion,336,299]
+
+Une fois devant le formulaire de création de compte, le formulaire de création de compte, la plupart des champs sont obligatoires, à l'exception du numéro de téléphone.
+
+image::image13.png[Formulaire création,274,358]
+
+Si vous validez le formulaire sans compléter tous les champs obligatoires, un message vous invitera à le remplir.
+
+image::image14.png[Message champs obligatoires,388,114]
+
+Si vous n'avez pas mis un mot de passe assez sécurisé, un message d'alerte vous invitera à le recomposer.
+
+image::image15.png[Alerte mot de passe,374,138]
+
+Votre e-mail doit être unique. Si vous possédez déjà un compte, le site vous en informera.
+
+image::image16.png[Email déjà existant,380,112]
+
+Quand les champs requis sont remplis et valide alors on le compte est créé
+
+image::image17.png[Compte créé,531,142]
+
+=== Connexion au compte
+
+Lorsque vous arrivez sur le site, cliquez sur se connecter dans la section en haut à droite, un formulaire de connexion apparaît.
+
+image::image11.png[Se connecter,602,84]
+
+Une fois devant le formulaire vous devez renseigner votre e-mail lié à votre compte ainsi que votre mot de passe. Si vous voulez rester connecté lorsque que vous quittez le site cochez le bouton "Se souvenir de moi". Une fois les champs remplis appuyer sur le bouton "Se Connecter".
+
+image::image18.png[Formulaire connexion complet,308,270]
+
+Si vous n'avez pas mis le mot de passe ou votre email correctement, il y aura une erreur d'identifiants incorrects.
+
+image::image19.png[Erreur identifiants,486,134]
+
+=== Gestion du compte
+
+==== Déconnexion
+
+Lorsque vous êtes connecté à votre compte cliquez sur la section mon compte en haut à droite.
+
+image::image20.png[Mon compte,602,50]
+
+Un tableau de bord avec différentes informations apparaîtra. Cliquez sur le bouton "Déconnexion" pour vous déconnecter.
+
+image::image21.png[Tableau de bord,602,237]
+
+==== Historique commande
+
+Lorsque que vous êtes connecté à votre compte cliquez sur la section mon compte en haut à droite, un tableau de bord avec différentes informations apparaît. Cliquez sur le bouton "Mes commandes" pour voir l'historique de vos commandes et leur statut.
+
+image::image22.png[Mes commandes,602,170]
+
+==== Détail de la commande
+
+Lorsque que vous êtes sur la partie de l'historique de commande cliquez sur le bouton "Voir détails" pour voir l'accès détaillé de la commande
+
+image::image23.png[Voir détails,602,165]
+
+Vous avez alors accès à la page résumant une commande passée
+
+image::image24.png[Détail commande,602,439]
+
+==== Modification information personnelle
+
+Lorsque que vous êtes connecté à votre compte cliquez sur la section mon compte en haut à droite, un tableau de bord avec différentes informations apparaît. Cliquez sur le bouton "Mes informations"
+
+image::image25.png[Mes informations,215,173]
+
+Une page résumant vos informations apparaîtra, cliquez ensuite sur le bouton "modifier"
+
+image::image26.png[Informations personnelles,602,391]
+
+Remplacez les champs que vous souhaitez, puis cliquez sur enregistrer, sinon annuler.
+
+image::image27.png[Modifier informations,463,375]
+
+Un message vous informe de la mise à jour de vos informations.
+
+image::image28.png[Confirmation mise à jour,602,104]
+
+=== Rechercher produit par mot clé
+
+Vous pouvez chercher un produit à l'aide d'un mot clé. Pour cela, rendez-vous dans la barre de recherche en haut du site.
+
+image::image29.png[Barre recherche,602,68]
+
+Tapez le nom du produit ou un mot clé pouvant caractériser le produit que vous voulez rechercher. Appuyez ensuite sur la loupe ou sur entrée.
+
+image::image30.png[Recherche mot clé,566,78]
+
+Les produits correspondant à votre recherche apparaissent dans le catalogue.
+
+image::image31.png[Résultats recherche,590,316]
+
+=== Chercher un produit grâce à des filtres
+
+Il est possible de chercher un produit grâce à des filtres. Cela se fait directement dans la page du catalogue.
+
+Pour ce faire, cliquez soit sur le bouton *"Catalogue"* ou bien une catégorie pouvant être sélectionnée dans la barre, telle que *"Alchimie & Potions"* :
+
+image::image32.png[Navigation catalogue,602,123]
+
+Une fois sur le catalogue, vous trouverez divers filtres sélectionnables dans des menus déroulants visibles.
+
+image::image33.png[Filtres disponibles,500,194]
+
+Il existe divers filtres incluant :
+
+* Le niveau de qualité
+
+image::image34.png[Filtre qualité,112,164]
+
+* Les regroupements
+
+image::image35.png[Filtre regroupements,168,170]
+
+* Les catégories (et sous catégories)
+
+[cols="1,1"]
+|===
+|image:image36.png[Catégories,168,166]
+|image:image37.png[Sous-catégories,174,166]
+|===
+
+* Le prix
+
+image::image38.png[Filtre prix,145,112]
+
+Exemple : afficher les armes avec prix décroissant
+
+image::image39.png[Exemple filtres,522,220]
+
+=== Consulter un produit
+
+Il est possible de consulter un produit. Cela se fait directement dans la page du catalogue.
+
+Pour ce faire, cliquez soit sur le bouton *"Catalogue"* ou bien une catégorie pouvant être sélectionnée dans la barre, telle que *"Alchimie & Potions"* :
+
+image::image32.png[Navigation catalogue,602,122]
+
+Passez ensuite la souris sur un article que vous voulez consulter et cliquez sur "Voir les Détails"
+
+image::image40.png[Voir détails produit,184,254]
+
+Vous arriverez sur une page résumant toutes les informations concernant le produit. Depuis cette page vous pouvez ajouter ce produit au panier ou l'acheter directement.
+
+image::image41.png[Page produit,414,227]
+
+Vous pouvez voir à droite du produit les variantes existantes
+
+image::image42.png[Variantes produit,360,105]
+
+La moyenne de la note et le nombre d'avis déposés sur le produit est visible à droite
+
+image::image43.png[Note moyenne,192,34]
+
+Il est également possible de sélectionner la quantité désirée.
+
+image::image44.png[Sélection quantité,246,70]
+
+Les divers avis déposés sur ce produit peuvent également être consulté sur cette page.
+
+image::image45.png[Avis clients,602,196]
+
+En bas de la page du produit, vous trouverez également une section "Artefacts Similaires", correspondant aux divers produits similaires à l'article que vous consultez.
+
+image::image46.png[Produits similaires,602,231]
+
+=== Ajouter un produit au panier
+
+Lorsque vous cliquez sur ajouter au panier depuis un article du catalogue ou bien depuis la page de consultation d'un produit
+
+depuis le catalogue :
+
+image::image47.png[Ajouter panier catalogue,206,318]
+
+depuis la page de consultation :
+
+image::image48.png[Ajouter panier consultation,602,356]
+
+Le logo du caddie (panier) se met à jour
+
+image::image49.png[Logo panier mis à jour,62,63]
+
+Pour consulter le panier il faut cliquer sur ce précédent logo et cela vous affichera son contenu
+
+image::image50.png[Contenu panier,500,218]
+
+Pour chaque article il y a des boutons + et - qui permettent de gérer les quantités voulues de l'article
+
+image::image51.png[Gestion quantités panier,602,124]
+
+=== Passer une commande
+
+Il existe deux manières de passer une commande :
+
+==== Depuis le panier
+
+Depuis le panier, l'utilisateur clique sur "passer à la caisse" lorsque son panier contient les éléments désirés.
+
+image::image52.png[image,width=602,height=240]
+
+==== Depuis la page de consultation d'un produit
+
+L'utilisateur sélectionne le bouton "Acheter maintenant" depuis la page de consultation d'un article.
+
+image::image53.png[image,width=745,height=446]
+
+[underline]#Après avoir choisi une manière de passer commande les étapes suivantes sont identiques pour les deux méthodes :#
+
+Le résumé de sa commande s'affiche. L'utilisateur peut modifier les champs d'informations pré-remplis, et choisir une méthode de paiement. Il clique sur payer.
+
+image::image54.png[image,width=602,height=296]
+
+La commande est validée.
+
+L'utilisateur peut ensuite consulter les informations de sa commande voir : [underline]#Détail de la commande#.
+
+image::image55.png[image,width=602,height=31]
+
+=== Déposer un avis
+
+_Avant de déposer un avis sur un produit, il est nécessaire que le produit ait bien été acheté au moins une fois et livré. Accédez à la page [underline]#détail de la commande# pour voir le résumé des produits achetés._
+
+L'utilisateur clique sur un produit commandé. Cela l'emmène à la page de consultation du produit.
+
+image::image56.png[image,width=448,height=367]
+
+Ici il peut écrire son avis et importer des images.
+
+image::image57.png[image,width=534,height=294]
+
+Exemple d'avis déposé.
+
+image::image58.png[image,width=493,height=190]
+
+=== Gérer les points de fidélité
+
+Depuis le menu "Mon Compte", l'utilisateur peut visualiser le total de ses points de fidélité. Les points sont gagnés lors d'un achat : prix total commande x 0.1.
+
+image::image59.png[image,width=501,height=204]
+
+Lors d'une nouvelle commande, l'utilisateur peut consommer ses points de fidélité pour obtenir des réductions.
+
+image::image60.png[image,width=525,height=248]
+
+
+
+== Dépannage
+=== Problèmes courants
+[cols="1,1,1", options="header"]
+|===
+| Problème | Cause possible | Solution
+
+| Identifiants incorrects
+| Erreur de saisie ou oubli
+| Vérifiez votre email et mot de passe ou utilisez la récupération de compte.
+
+| Email déjà utilisé
+| Un compte existe déjà
+| Connectez-vous avec cet email ou utilisez-en un autre.
+
+| Mot de passe invalide
+| Critères de sécurité non respectés
+| Assurez-vous d'utiliser 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.
+|===
+
+=== Support
+Contacter le support :
+
+* Email : support@leroi-merlin.com
+
+== Bonnes pratiques
+* Sauvegarder régulièrement ses données
+* Ne pas partager ses identifiants
+* Fermer la session après usage
+* Tenir le logiciel à jour
+
+== Annexes
+=== Glossaire
+* **Mana** : Ressource magique utilisée pour lancer des sorts.
+* **Falconia** : Contrée de provenance de nombreux objets artisanaux.
+
+=== Historique des versions
+|===
+| Version | Date | Auteur | Modifications
+| 1.0 | 13/12/2025 | Groupe 1B | Création initiale de la documentation
+| 2.0 | 28/12/2025 | Groupe 1B | Ajout des fonctionnalités finales
+|===

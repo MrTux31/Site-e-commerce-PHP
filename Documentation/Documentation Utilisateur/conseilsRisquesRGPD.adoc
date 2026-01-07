@@ -1,0 +1,136 @@
+= Fiche de conseils – Risques et RGPD
+Administration du site e-commerce LeroiMerlin
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+
+== Objectif de la fiche
+
+Cette fiche a pour objectif de sensibiliser les administrateurs du site e-commerce aux principaux risques liés à la manipulation des données personnelles des clients et de rappeler les bonnes pratiques à adopter afin de respecter les principes du Règlement Général sur la Protection des Données (RGPD).
+
+L'administrateur joue un rôle clé dans la protection des informations personnelles, car il dispose d'un accès privilégié aux données du système.
+
+== Données personnelles manipulées par l'administrateur
+
+Dans le cadre de l'administration du site, l'administrateur est amené à consulter ou manipuler différentes données personnelles, notamment :
+
+* Nom et prénom des clients
+* Adresse email
+* Adresse postale de livraison et de facturation
+* Historique et statut des commandes (payée, expédiée, livrée, annulée)
+* Informations de compte client (hors données bancaires)
+* Cookies et préférences de navigation (tracking, marketing)
+
+[IMPORTANT]
+====
+Les données bancaires complètes (numéros de carte, cryptogrammes) ne doivent jamais être stockées dans le système. Elles sont traitées uniquement par des prestataires de paiement certifiés (Stripe, PayPal, etc.).
+====
+
+Ces données sont nécessaires au bon fonctionnement du service, mais leur utilisation doit rester strictement encadrée.
+
+== Principaux risques identifiés
+
+Les principaux risques liés à la manipulation des données sont :
+
+* Accès non autorisé aux données clients
+* Modification involontaire ou incorrecte d'une commande
+* Divulgation accidentelle d'informations (ex. : envoyer par erreur un email contenant les informations du client A au client B)
+* Conservation excessive des données sans justification
+* Utilisation des données à des fins non prévues (curiosité, usage personnel)
+* Non-respect des droits des utilisateurs (accès, rectification, suppression)
+
+Ces risques peuvent porter atteinte à la vie privée des clients et engager la responsabilité de l'organisation.
+
+== Spécificités e-commerce à prendre en compte
+
+Pour un site e-commerce, l'administrateur doit être particulièrement vigilant sur :
+
+* *Données bancaires* : ne jamais stocker les informations sensibles après paiement
+* *Cookies et trackers* : respecter le consentement et la politique de confidentialité
+* *Prospection commerciale / newsletters* : vérifier que le client a donné son consentement
+* *Avis clients* : contrôler la publication pour éviter de divulguer des informations personnelles
+* *Sous-traitants* : paiement, livraison ou services externes doivent être conformes RGPD
+
+== Bonnes pratiques concrètes pour l'administrateur
+
+* Utiliser un mot de passe fort et personnel
+* Ne jamais partager ses identifiants
+* Se déconnecter après chaque session
+* Accéder uniquement aux données strictement nécessaires à la mission
+* Vérifier attentivement toute modification avant validation
+* Respecter les procédures internes de gestion des commandes et comptes clients
+* Limiter l'accès aux sous-traitants et vérifier leur conformité
+
+=== Exemples concrets
+
+* Pour traiter une réclamation sur une livraison, n'ouvrez que l'adresse et le statut de commande, pas tout l'historique
+* Si vous devez vérifier une adresse de livraison, n'ouvrez pas l'historique complet des commandes du client
+
+== Principes fondamentaux du RGPD à respecter
+
+* *Minimisation des données* : consulter uniquement les informations nécessaires à votre tâche
+* *Confidentialité* : ne divulguer aucune donnée à des tiers non autorisés
+* *Sécurité* : accès restreint selon les rôles, mots de passe sécurisés, HTTPS obligatoire
+* *Transparence et information* : publication d'une politique de confidentialité claire
+* *Durée de conservation limitée* : définir et respecter la durée maximale pour chaque type de donnée
+** Comptes clients inactifs : 3 ans après la dernière commande
+** Données comptables : 10 ans (obligation légale)
+** Données de prospection : 3 ans après le dernier contact
+* *Respect des droits des utilisateurs* : garantir accès, rectification, suppression et portabilité des données
+
+== Sécurité technique des données
+
+* Connexions sécurisées (HTTPS)
+* Accès aux données réservé aux personnes autorisées
+* Protection contre les accès non autorisés
+* Sauvegardes régulières et sécurisées
+* Mots de passe et identifiants hashés ou cryptés
+
+== Gestion des incidents de données
+
+En cas de violation (accès non autorisé, fuite accidentelle, perte de données) :
+
+* Signaler immédiatement l'incident aux responsables
+* Documenter précisément les faits
+* Suivre la procédure interne de gestion des incidents
+* Notifier la CNIL dans les 72h si la violation présente un risque pour les droits et libertés des personnes
+* Si le risque est élevé, informer également les personnes concernées
+
+== Check-list quotidienne de l'administrateur
+
+[cols="1,1", options="header"]
+|===
+|Action à faire 
+|Action à éviter
+
+|Vérifier les accès aux données 
+|Partager vos identifiants
+
+|Se déconnecter après utilisation 
+|Laisser une session ouverte
+
+|Consulter uniquement les données nécessaires 
+|Consulter l'historique complet sans justification
+
+|Suivre la procédure interne pour chaque modification 
+|Modifier une commande sans validation
+
+|Documenter les incidents 
+|Ne rien signaler en cas de problème
+
+|Respecter la politique de confidentialité 
+|Envoyer des newsletters sans consentement
+|===
+
+== Responsabilité de l'administrateur
+
+L'administrateur est responsable de l'usage des données auxquelles il a accès.
+
+Toute mauvaise manipulation, négligence ou utilisation abusive peut avoir des conséquences juridiques et nuire à la confiance des clients.
+
+== Conclusion
+
+Respecter les règles de sécurité et le RGPD est essentiel pour protéger les clients et le bon fonctionnement du site.
+
+Cette fiche sert de guide pour vous aider à manipuler les données personnelles de manière sûre et responsable au quotidien.
